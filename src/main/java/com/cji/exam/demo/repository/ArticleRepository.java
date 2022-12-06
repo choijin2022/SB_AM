@@ -8,7 +8,8 @@ import com.cji.exam.demo.vo.Article;
 
 @Mapper
 public interface ArticleRepository {
-
+		
+		
 		public void writeArticle(String title, String body);
 
 		public Article getArticle(int id);

@@ -22,12 +22,12 @@ public class Member {
 	private LocalDateTime updateDate; 
 	private int loginId;
 	private String loginPw; 
-	private int authLevel; 
+	//private int authLevel; 
 	private String name;
 	private String nickname;
 	private String cellphoneNum; 
 	private String email; 
-	private int delStatus; 
-	private String delDate; 
+	//private int delStatus; 
+	//private String delDate; 
 	
 }
