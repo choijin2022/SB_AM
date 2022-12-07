@@ -45,4 +45,6 @@ public interface MemberRepository {
 			AND email = #{email}
 			""")
 	public Member getMemberByEmailAndName(String name, String email);
+
+	public Member getMemberByNameAndEmail(String name, String email);
 }

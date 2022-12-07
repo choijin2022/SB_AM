@@ -38,7 +38,6 @@ private ArticleRepository articleRepository;
 	}
 
 	public ResultData writeArticle(String title, String body) {
-		//ResultData.from(title, body);
 		articleRepository.writeArticle(title, body);
 		int id =articleRepository.getLastInsertId();
 		return ResultData.from("S-1", Utility.f("%d번 게시물이 생성되었습니다.", id),id);
