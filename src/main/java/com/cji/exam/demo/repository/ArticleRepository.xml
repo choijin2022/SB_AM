@@ -4,7 +4,7 @@
 <mapper namespace="com.cji.exam.demo.repository.ArticleRepository">
 	
 	
-<insert id="writeArticle">
+<insert id="writeArticle" >
 	INSERT INTO article 
 		SET regDate = NOW(), 
 			updateDate = NOW(), 
@@ -15,7 +15,7 @@
  SELECT * FROM article WHERE id = #{id}
 </select>
 
-<select id="getArticles">
+<select id="getArticles" resultType="Article">
  SELECT * 
  	FROM article 
  	ORDER BY id DESC

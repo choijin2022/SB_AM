@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cji.exam.demo.service.ArticleService;
+import com.cji.exam.demo.util.Utility;
 import com.cji.exam.demo.vo.Article;
+import com.cji.exam.demo.vo.ResultData;
 
 @Controller
 public class UsrArticleController {
@@ -24,21 +26,30 @@ public class UsrArticleController {
 	// 액션메서드
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
-	public Article doAdd(String title, String body) {
-		int id = articleService.writeArticle(title, body);
+	public ResultData doAdd(String title, String body) {
+		// 유효성 검사
 		
-		Article article = articleService.getArticle(id);
+		//ResultData
 		
-		return article;
+		
+		ResultData writeArticleRd =articleService.writeArticle(title, body) ; 
+		
+		
+		Article article = articleService.getArticle((int) writeArticleRd.getData1()) ;
+		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(),article);
 	}
 
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
-	public List<Article> getArticles() {
-
-		return articleService.getArticles();
+	public ResultData getArticles() {
+		
+		
+		List<Article> articles = articleService.getArticles();
+		return ResultData.from("S-1", "게시물 리스트",articles);
 	}
 
+	
+	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
@@ -71,15 +82,16 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticle(int id) {
+	public ResultData getArticle(int id) {
 
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
-			return id + "번 게시물은 존재하지 않습니다";
+			return ResultData.from("F-1", Utility.f("%번 게시물은 존재하지 않습니다", id));
+					
 		}
 
-		return article;
+		return ResultData.from("F-1", Utility.f("%번 게시물은 존재하지 않습니다", id),article);
 	}
 
 }
