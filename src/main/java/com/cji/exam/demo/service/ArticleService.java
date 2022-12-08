@@ -37,8 +37,8 @@ private ArticleRepository articleRepository;
 		return articleRepository.getArticles();
 	}
 
-	public ResultData<Integer> writeArticle(String title, String body) {
-		articleRepository.writeArticle(title, body);
+	public ResultData<Integer> writeArticle(int loginedMemberId, String title, String body) {
+		articleRepository.writeArticle(loginedMemberId, title, body);
 		int id =articleRepository.getLastInsertId();
 		return ResultData.from("S-1", Utility.f("%d번 게시물이 생성되었습니다.", id),id);
 	}

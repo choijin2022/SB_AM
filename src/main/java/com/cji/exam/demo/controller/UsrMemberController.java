@@ -10,6 +10,8 @@ import com.cji.exam.demo.util.Utility;
 import com.cji.exam.demo.vo.Member;
 import com.cji.exam.demo.vo.ResultData;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsrMemberController {
 	
@@ -56,7 +58,47 @@ ResultData<Integer> doJoinRd = memberService.doJoin(loginId, loginPw, name, nick
 		return ResultData.from(doJoinRd.getResultCode(), doJoinRd.getMsg(), member);
 	}
 	
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public ResultData doLogin(HttpSession httpSession, String loginId,String loginPw ) {
+		
+		if(httpSession.getAttribute("logindeMemberId") !=null) {
+			return ResultData.from("F-1", "이미 로그인되어있습니다");
+		}
+		
+		
+		if(Utility.empty(loginId)) {
+			return ResultData.from("F-2", "아이디를 입력해주세요"); 
+		}
+		if(Utility.empty(loginPw)) {
+			return ResultData.from("F-3", "입력해주세요");
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if(member==null) {
+			return ResultData.from("F-4", "존재하지 않는 아이디입니다.");
+		}
+		if(member.getLoginPw().equals(loginPw) == false) {
+			return ResultData.from("F-5", "비밀번호가 일치하지 않습니다.");
+		}
+		httpSession.setAttribute("logindeMemberId",member.getId());
+		 
+		return ResultData.from("S-1",Utility.f("%S님 환영합니다", member.getNickname()));
+	}
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData<Member> doLogout(HttpSession httpSession) {
+		
+		if(httpSession.getAttribute("logindeMemberId") ==null) {
+			return ResultData.from("F-1", "로그아웃 상태입니다");
+		}
+		httpSession.removeAttribute("logindeMemberId");
+		
 	
+		 
+		return ResultData.from("S-1","로그아웃 되었습니다.");
+	}
 	
 
 }
