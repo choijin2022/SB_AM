@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class Article {
 	private int id;
 	private LocalDateTime regDate;
-	private int loginedMemberId;
+	private LocalDateTime updateDate;
+	private int memberId;
 	private String title;
 	private String body;
 }

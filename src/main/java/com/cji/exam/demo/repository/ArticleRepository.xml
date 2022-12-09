@@ -4,46 +4,45 @@
 <mapper namespace="com.cji.exam.demo.repository.ArticleRepository">
 	
 	
-<insert id="writeArticle" >
-	INSERT INTO article 
-		SET regDate = NOW(), 
-			updateDate = NOW(), 
-			memberId = #{loginedMemberId},
-			title = #{title}, 
-			`body` = #{body}
-</insert>
-<select id="getArticle" resultType="Article">
- SELECT * FROM article WHERE id = #{id}
-</select>
+<insert id="writeArticle">
+		INSERT INTO article
+			SET regDate = NOW(),
+				updateDate = NOW(),
+				memberId = #{memberId},
+				title = #{title},
+				`body` = #{body}
+	</insert>
 
-<select id="getArticles" resultType="Article">
- SELECT * 
- 	FROM article 
- 	ORDER BY id DESC
-</select>
+	<select id="getArticle" resultType="Article">
+		SELECT * 
+			FROM article 
+			WHERE id = #{id}
+	</select>
 
-<delete id="deleteArticle">
-DELETE 
-	FROM article 
-	WHERE id = #{id}
-</delete>		
-		
-<update id="modifyArticle">
-UPDATE article 
-	<set>
-	updateDate = NOW(),
-	<if test="title != null ane title != ''">title = #{title},</if>
-	<if test="title != null ane title != ''">`body` = #{body} </if>
-		 
-		
-	</set>
+	<select id="getArticles" resultType="Article">
+		SELECT * 
+			FROM article 
+			ORDER BY id DESC
+	</select>
 	
-	WHERE id = #{id}
-</update>
+	<delete id="deleteArticle">
+		DELETE FROM article 
+			WHERE id = #{id}
+	</delete>
 
-<select id="getLastInsertId" resultType = "int">
-SELECT LAST_INSERT_ID()
-</select>
+	<update id="modifyArticle">
+		UPDATE article 
+			<set>
+				updateDate = NOW(),
+				<if test="title != null and title != ''">title = #{title},</if>
+				<if test="body != null and body != ''">`body` = #{body}</if>
+			</set>
+			WHERE id = #{id}
+	</update>
+	
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
 
 </mapper>
 

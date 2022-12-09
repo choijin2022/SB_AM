@@ -55,7 +55,7 @@ ResultData<Integer> doJoinRd = memberService.doJoin(loginId, loginPw, name, nick
 		
 		Member member = memberService.getMemberById((int) doJoinRd.getData1());
 		
-		return ResultData.from(doJoinRd.getResultCode(), doJoinRd.getMsg(), member);
+		return ResultData.from(doJoinRd.getResultCode(), doJoinRd.getMsg(),"member", member);
 	}
 	
 	@RequestMapping("/usr/member/doLogin")

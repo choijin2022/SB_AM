@@ -10,15 +10,15 @@ import com.cji.exam.demo.vo.Article;
 public interface ArticleRepository {
 		
 		
-		public void writeArticle(int loginedMemberId, String title, String body);
+	public void writeArticle(int memberId, String title, String body);
 
-		public Article getArticle(int id);
+	public Article getArticle(int id);
 
-		public List<Article> getArticles();
-		
-		public void deleteArticle(int id);
+	public List<Article> getArticles();
+	
+	public void deleteArticle(int id);
 
-		public void modifyArticle(int id, String title, String body);
+	public void modifyArticle(int id, String title, String body);
 
-		public int getLastInsertId();
+	public int getLastInsertId();
 }
