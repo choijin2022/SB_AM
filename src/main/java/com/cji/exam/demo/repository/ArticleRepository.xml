@@ -3,7 +3,6 @@
 
 <mapper namespace="com.cji.exam.demo.repository.ArticleRepository">
 	
-	
 <insert id="writeArticle">
 		INSERT INTO article
 			SET regDate = NOW(),
@@ -18,11 +17,21 @@
 			FROM article 
 			WHERE id = #{id}
 	</select>
+	
+	<select id="getForPrintArticle" resultType="Article">
+		SELECT A.*, M.nickname AS writerName
+			FROM article AS A
+			INNER JOIN `member` AS M
+			ON A.memberId = M.id
+			WHERE A.id = #{id}
+	</select>
 
 	<select id="getArticles" resultType="Article">
-		SELECT * 
-			FROM article 
-			ORDER BY id DESC
+		SELECT A.*, M.nickname AS writerName
+			FROM article AS A
+			INNER JOIN `member` AS M
+			ON A.memberId = M.id 
+			ORDER BY A.id DESC
 	</select>
 	
 	<delete id="deleteArticle">
@@ -43,6 +52,5 @@
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
-
 </mapper>
 
