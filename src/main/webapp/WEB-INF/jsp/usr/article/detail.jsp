@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="DETAIL" />
+<c:set var="pageTitle" value="ARTICLE DETAIL" />
 <%@ include file="../common/head.jsp"%>
 
 <section class="mt-8 text-xl">
@@ -41,8 +41,10 @@
 		</div>
 		<div class="btns">
 			<button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
-			<a class="btn-text-link" href="modify?id=${article.id }">수정</a>
-			<a class="btn-text-link" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>
+			<c:if test="${article.actorCanChangeData }">
+				<a class="btn-text-link" href="modify?id=${article.id }">수정</a>
+				<a class="btn-text-link" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>
+			</c:if>
 		</div>
 	</div>
 </section>

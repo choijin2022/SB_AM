@@ -1,7 +1,5 @@
 package com.cji.exam.demo.vo;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-
 	private int id;
 	private String regDate;
 	private String updateDate;
@@ -23,5 +20,4 @@ public class Member {
 	private String email;
 	private boolean delStatus;
 	private String delDate;
-	
 }

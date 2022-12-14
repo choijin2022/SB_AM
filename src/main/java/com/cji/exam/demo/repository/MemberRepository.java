@@ -8,6 +8,7 @@ import com.cji.exam.demo.vo.Member;
 
 @Mapper
 public interface MemberRepository {
+	
 	@Insert("""
 			INSERT INTO `member`
 			SET regDate = NOW(),
@@ -37,13 +38,12 @@ public interface MemberRepository {
 			WHERE loginId = #{loginId}
 			""")
 	public Member getMemberByLoginId(String loginId);
-
+	
 	@Select("""
 			SELECT *
 			FROM `member`
-			WHERE name = #{name} 
+			WHERE name = #{name}
 			AND email = #{email}
 			""")
 	public Member getMemberByNameAndEmail(String name, String email);
-
 }

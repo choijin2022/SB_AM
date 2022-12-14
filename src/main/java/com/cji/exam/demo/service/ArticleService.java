@@ -10,11 +10,10 @@ import com.cji.exam.demo.util.Utility;
 import com.cji.exam.demo.vo.Article;
 import com.cji.exam.demo.vo.ResultData;
 
-import javax.servlet.http.HttpSession;
-
 @Service
 public class ArticleService {
-private ArticleRepository articleRepository;
+	
+	private ArticleRepository articleRepository;
 	
 	@Autowired
 	public ArticleService(ArticleRepository articleRepository) {
@@ -100,5 +99,4 @@ private ArticleRepository articleRepository;
 		article.setActorCanChangeData(actorCanChangeDataRd.isSuccess());
 		
 	}
-	
 }

@@ -10,8 +10,8 @@ import com.cji.exam.demo.vo.ResultData;
 
 @Service
 public class MemberService {
-
-private MemberRepository memberRepository;
+	
+	private MemberRepository memberRepository;
 	
 	@Autowired
 	public MemberService(MemberRepository memberRepository) {
@@ -51,6 +51,5 @@ private MemberRepository memberRepository;
 	private Member getMemberByNameAndEmail(String name, String email) {
 		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
-
-
+	
 }
