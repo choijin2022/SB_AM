@@ -16,11 +16,12 @@ public class Rq {
 	private int loginedMemberId;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
+
 	public Rq(HttpServletRequest req, HttpServletResponse resp) {
+		this.req = req;
+		this.resp = resp;
 		
 		HttpSession httpSession = req.getSession();
-		this.req=req;
-		this.resp=resp;
 		
 		int loginedMemberId = 0;
 		
@@ -31,22 +32,16 @@ public class Rq {
 		this.loginedMemberId = loginedMemberId;
 	}
 
-	public void jsPrintHistoryBack(String msg) {
-		resp.setContentType("text/html; charset=UTF-8;");
-		print("<script>");
-		if(Utility.empty(msg)) {
-			print("alert('" + msg + "');");
-		}
-		print("historyBack");
-		print("</script>");
+	public void jsPrintHistoryBack(String msg) throws IOException{
+		resp.setContentType("text/html; charset=UTF-8");
 		
-		
-		
+		print(Utility.jsHistoryBack(msg));
 	}
+
 	private void print(String str) {
 		try {
 			resp.getWriter().append(str);
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

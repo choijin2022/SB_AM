@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.cji.exam.demo.vo.ResultData;
 import com.cji.exam.demo.vo.Rq;
 @Component
 public class NeedLoginIntercepor implements HandlerInterceptor {

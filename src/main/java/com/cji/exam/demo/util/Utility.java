@@ -4,7 +4,7 @@ import com.cji.exam.demo.vo.ResultData;
 
 public class Utility {
 
-	public static boolean empty(Object obj) {
+public static boolean empty(Object obj) {
 		
 		if(obj == null) {
 			return true;
