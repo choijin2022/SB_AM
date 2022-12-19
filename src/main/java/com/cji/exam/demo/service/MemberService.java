@@ -11,7 +11,7 @@ import com.cji.exam.demo.vo.ResultData;
 @Service
 public class MemberService {
 	
-	private MemberRepository memberRepository;
+private MemberRepository memberRepository;
 	
 	@Autowired
 	public MemberService(MemberRepository memberRepository) {

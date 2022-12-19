@@ -39,6 +39,7 @@
 				</tbody>
 			</table>
 		</div>
+		
 		<div class="btns">
 			<button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
 			<c:if test="${article.actorCanChangeData }">
