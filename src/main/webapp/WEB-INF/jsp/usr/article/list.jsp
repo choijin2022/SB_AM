@@ -9,6 +9,16 @@
 			<div>
 				<span>${articlesCount } 개</span>
 			</div>
+			<!-- 서치 기능 -->
+			<form >
+			<select name="searchKeywordTypeCode">
+				<option value="title">제목</option>
+				<option value="body">내용</option>
+				<option value="all">제목+내용</option>
+			</select>
+			검색어 <input type="text" name="searchkeyWord" placeholder="검색어를 입력해주세요" maxlength="20">
+			<input type="submit" value="검색">
+			</form>
 			<c:if test="${rq.getLoginedMemberId() != 0 }">
 				<a class="btn-text-link btn btn-active btn-ghost" href="/usr/article/write">WRITE</a>
 			</c:if>
@@ -35,6 +45,33 @@
 					</c:forEach>
 				</tbody>
 			</table>
+		</div>
+		<div class="page-menu mt-2 flex justify-center">
+			<div class="btn-group">
+				<c:set var="pageMenuLen" value="5" />
+				<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
+				<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
+				
+				<c:if test="${page == 1 }">
+					<a class="btn btn-sm btn-disabled">«</a>
+					<a class="btn btn-sm btn-disabled">&lt;</a>
+				</c:if>
+				<c:if test="${page > 1 }">
+					<a class="btn btn-sm" href="?boardId=${boardId }&page=1">«</a>
+					<a class="btn btn-sm" href="?boardId=${boardId }&page=${page - 1 }">&lt;</a>
+				</c:if>
+				<c:forEach begin="${startPage }" end="${endPage }" var="i">
+					<a class="btn btn-sm ${page == i ? 'btn-active' : ''}" href="?boardId=${boardId }&page=${i }">${i }</a>
+				</c:forEach>
+				<c:if test="${page < pagesCount }">
+					<a class="btn btn-sm" href="?boardId=${boardId }&page=${page + 1 }">&gt;</a>
+					<a class="btn btn-sm" href="?boardId=${boardId }&page=${pagesCount }">»</a>
+				</c:if>
+				<c:if test="${page == pagesCount }">
+					<a class="btn btn-sm btn-disabled">&gt;</a>
+					<a class="btn btn-sm btn-disabled">»</a>
+				</c:if>
+			</div>
 		</div>
 	</div>
 </section>
