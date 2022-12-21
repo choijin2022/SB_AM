@@ -12,7 +12,7 @@ public interface ArticleRepository {
 
 	public Article getArticle(int id);
 
-	public List<Article> getArticles(int boardId, int limitStart, int itemsInAPage);
+	public List<Article> getArticles(int boardId, String searchKeywordTypeCode, String searchKeyword, int limitStart, int itemsInAPage);
 	
 	public void deleteArticle(int id);
 
@@ -22,5 +22,9 @@ public interface ArticleRepository {
 
 	public Article getForPrintArticle(int id);
 
-	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchkeyWord);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
+
+	public int increaseHitCount(int id);
+
+	public int getArticleHitCount(int id);
 }

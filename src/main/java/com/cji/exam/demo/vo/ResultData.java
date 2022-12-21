@@ -35,4 +35,9 @@ public class ResultData<DT> {
 		return isSuccess() == false;
 	}
 
+	public void setData2(String string, int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

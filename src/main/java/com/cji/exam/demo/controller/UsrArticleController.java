@@ -58,9 +58,9 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId,
-			@RequestParam(defaultValue = "1") int page, 
-			@RequestParam(defaultValue = "title") String searchKeywordTypeCode, 
-			@RequestParam(defaultValue = "") String searchkeyWord) {
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "title") String searchKeywordTypeCode,
+			@RequestParam(defaultValue = "") String searchKeyword) {
 
 		if (page <= 0) {
 			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다", true);
@@ -72,15 +72,13 @@ public class UsrArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다", true);
 		}
 
-		int articlesCount = articleService.getArticlesCount(boardId,  searchKeywordTypeCode, searchkeyWord);
+		int articlesCount = articleService.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
 
 		int itemsInAPage = 10;
 
 		int pagesCount = (int) Math.ceil((double) articlesCount / itemsInAPage);
 
-		List<Article> articles = articleService.getArticles(boardId, itemsInAPage, page);
-
-	
+		List<Article> articles = articleService.getArticles(boardId, searchKeywordTypeCode, searchKeyword, itemsInAPage, page);
 
 		model.addAttribute("board", board);
 		model.addAttribute("articles", articles);
@@ -88,10 +86,11 @@ public class UsrArticleController {
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("page", page);
 		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+		model.addAttribute("searchKeyword", searchKeyword);
 
 		return "usr/article/list";
 	}
-
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(HttpServletRequest req, int id) {
@@ -143,13 +142,31 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/detail")
-	public String ShowDetail(HttpServletRequest req, Model model, int id) {
-
+	public String ShowDetail(Model model, int id) {
+		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-
+		
 		model.addAttribute("article", article);
 
 		return "usr/article/detail";
 	}
-
+	
+	@RequestMapping("/usr/article/doIncreaseHitCountRd")
+	@ResponseBody
+	public ResultData<Integer> doIncreaseHitCountRd(int id) {
+		
+		ResultData<Integer> increaseHitCountRd = articleService.increaseHitCount(id);
+		
+		if(increaseHitCountRd.isFail()) {
+			return increaseHitCountRd;
+		}
+		
+		ResultData<Integer> rd = ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(), "hitCount", articleService.getArticleHitCount(id));
+		
+		rd.setData2("id", id);
+		
+		return rd;
+	}
+	
+	
 }

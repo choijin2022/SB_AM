@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.cji.exam.demo.repository.ArticleRepository">
-
-	<insert id="writeArticle">
+<insert id="writeArticle">
 		INSERT INTO article
 			SET regDate = NOW(),
 				updateDate = NOW(),
@@ -26,17 +25,21 @@
 		<if test="boardId != 0">
 			AND boardId = #{boardId}
 		</if>
-		<if test="searchkeyWord != ''">
+		<if test="searchKeyword != ''">
 			<choose>
-				<when test="searchKeywordTypeCode=='title'">
-				
+				<when test="searchKeywordTypeCode == 'title'">
+					AND title LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
-				
-				
-				
+				<when test="searchKeywordTypeCode == 'body'">
+					AND body LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					AND (
+							title LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR body LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+				</otherwise>
 			</choose>
-			
-			CONCAT('%',#{keyword},'%')
 		</if>
 	</select>
 	
@@ -57,8 +60,23 @@
 <!-- 			if 조건이 하나면 이처럼 안해도 되지만 여러개면 이 방식으로 처리 -->
 			<if test="boardId != 0">
 				AND A.boardId = #{boardId}
-			</if> 
-			
+			</if>
+			<if test="searchKeyword != ''">
+				<choose>
+					<when test="searchKeywordTypeCode == 'title'">
+						AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordTypeCode == 'body'">
+						AND body LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<otherwise>
+						AND (
+								title LIKE CONCAT('%', #{searchKeyword}, '%')
+								OR body LIKE CONCAT('%', #{searchKeyword}, '%')
+							)
+					</otherwise>
+				</choose>
+			</if>
 			ORDER BY A.id DESC
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
@@ -81,6 +99,18 @@
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
-
+	
+	<update id="increaseHitCount">
+		UPDATE article 
+			SET hitCount = hitCount + 1
+			WHERE id = #{id}
+	</update>
+	
+	<select id="getArticleHitCount" resultType="int">
+		SELECT hitCount
+			FROM article
+			WHERE id = #{id}
+	</select>
+	
 	
 </mapper>
