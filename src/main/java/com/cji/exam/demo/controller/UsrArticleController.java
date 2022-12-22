@@ -78,7 +78,8 @@ public class UsrArticleController {
 
 		int pagesCount = (int) Math.ceil((double) articlesCount / itemsInAPage);
 
-		List<Article> articles = articleService.getArticles(boardId, searchKeywordTypeCode, searchKeyword, itemsInAPage, page);
+		List<Article> articles = articleService.getArticles(boardId, searchKeywordTypeCode, searchKeyword, itemsInAPage,
+				page);
 
 		model.addAttribute("board", board);
 		model.addAttribute("articles", articles);
@@ -91,9 +92,10 @@ public class UsrArticleController {
 
 		return "usr/article/list";
 	}
+
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req, int id) {
+	public String doDelete(int id) {
 
 		Article article = articleService.getArticle(id);
 
@@ -105,11 +107,11 @@ public class UsrArticleController {
 
 		articleService.deleteArticle(id);
 
-		return Utility.jsReplace(Utility.f("%d번 게시물을 삭제했습니다", id), "list");
+		return Utility.jsReplace(Utility.f("%d번 게시물을 삭제했습니다", id), "list?boardId=1");
 	}
 
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, Model model, int id) {
+	public String showModify(Model model, int id) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
@@ -126,7 +128,7 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
+	public String doModify(int id, String title, String body) {
 
 		Article article = articleService.getArticle(id);
 
@@ -143,26 +145,29 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/detail")
 	public String ShowDetail(Model model, int id) {
-		
+
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+		
+//		int getGoogPoint = articleService.getGoogPoint(id);
 		
 		model.addAttribute("article", article);
 
 		return "usr/article/detail";
 	}
-	
+
 	@RequestMapping("/usr/article/doIncreaseHitCountRd")
 	@ResponseBody
 	public ResultData<Integer> doIncreaseHitCountRd(int id) {
-		
+
 		ResultData<Integer> increaseHitCountRd = articleService.increaseHitCount(id);
-		
-		if(increaseHitCountRd.isFail()) {
+
+		if (increaseHitCountRd.isFail()) {
 			return increaseHitCountRd;
 		}
-		
-		ResultData<Integer> rd = ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(), "hitCount", articleService.getArticleHitCount(id));
-		
+
+		ResultData<Integer> rd = ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(),
+				"hitCount", articleService.getArticleHitCount(id));
+
 		rd.setData2("id", id);
 		
 		return rd;

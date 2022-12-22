@@ -22,8 +22,7 @@ public class Rq {
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private HttpSession session;
-	
-	
+
 	public Rq(HttpServletRequest req, HttpServletResponse resp) {
 		this.req = req;
 		this.resp = resp;
@@ -36,6 +35,7 @@ public class Rq {
 		}
 		
 		this.loginedMemberId = loginedMemberId;
+		
 		this.req.setAttribute("rq", this);
 	}
 
@@ -67,6 +67,8 @@ public class Rq {
 		return "usr/common/js";
 	}
 
+	// 해당 메서드는 Rq 객체의 생성을 유도한다.
+	// 편의를 위해서 BeforeActionInterceptor에서 호출해줘야 함
 	public void initOnBeforeActionInterceptor() {
 		
 	}
