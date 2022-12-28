@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cji.exam.demo.service.ReplyService;
 import com.cji.exam.demo.util.Utility;
+import com.cji.exam.demo.vo.Article;
+import com.cji.exam.demo.vo.Reply;
 import com.cji.exam.demo.vo.ResultData;
 import com.cji.exam.demo.vo.Rq;
 
@@ -33,6 +35,23 @@ public class UsrReplyController {
 		int id = writeReplyRd.getData1();
 
 		return Utility.jsReplace(Utility.f("%d번 댓글이 생성되었습니다", id), Utility.f("../article/detail?id=%d", relId));
+	}
+	
+	@RequestMapping("/usr/reply/doDelete")
+	@ResponseBody
+	public String doDelete(int id) {
+
+		Reply reply = replyService.getReply(id);
+
+		ResultData actorCanMDRd = replyService.actorCanMD(rq.getLoginedMemberId(), reply);
+
+		if (actorCanMDRd.isFail()) {
+			return Utility.jsHistoryBack(actorCanMDRd.getMsg());
+		}
+
+		replyService.deleteReply(id);
+
+		return Utility.jsReplace(Utility.f("%d번 댓글을 수정했습니다", id), Utility.f("../article/detail?id=%d", reply.getRelId()));
 	}
 	
 	

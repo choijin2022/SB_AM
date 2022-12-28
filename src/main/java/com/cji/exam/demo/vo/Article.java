@@ -16,10 +16,16 @@ public class Article {
 	private String title;
 	private String body;
 	private int hitCount;
-	
+
 	private String writerName;
 	private boolean actorCanChangeData;
 	private int sumReactionPoint;
 	private int goodReactionPoint;
 	private int badReactionPoint;
+
+	public String getForPrintBody() {
+
+		return this.body.replaceAll("\n", "<br />");
+	}
+
 }
