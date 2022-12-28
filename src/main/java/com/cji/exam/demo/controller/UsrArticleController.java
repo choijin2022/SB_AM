@@ -2,8 +2,6 @@ package com.cji.exam.demo.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cji.exam.demo.service.ArticleService;
 import com.cji.exam.demo.service.BoardService;
+import com.cji.exam.demo.service.ReplyService;
 import com.cji.exam.demo.util.Utility;
 import com.cji.exam.demo.vo.Article;
 import com.cji.exam.demo.vo.Board;
+import com.cji.exam.demo.vo.Reply;
 import com.cji.exam.demo.vo.ResultData;
 import com.cji.exam.demo.vo.Rq;
 
@@ -24,12 +24,14 @@ public class UsrArticleController {
 
 	private ArticleService articleService;
 	private BoardService boardService;
+	private ReplyService replyService;
 	private Rq rq;
 
 	@Autowired
-	public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService, ReplyService replyService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.replyService = replyService;
 		this.rq = rq;
 	}
 
@@ -51,7 +53,7 @@ public class UsrArticleController {
 
 		ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body);
 
-		int id = (int) writeArticleRd.getData1();
+		int id = writeArticleRd.getData1();
 
 		return Utility.jsReplace(Utility.f("%d번 글이 생성되었습니다", id), Utility.f("detail?id=%d", id));
 	}
@@ -147,10 +149,11 @@ public class UsrArticleController {
 	public String ShowDetail(Model model, int id) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		
-//		int getGoogPoint = articleService.getGoogPoint(id);
+
+		List<Reply> replies = replyService.getForPrintReplies("article", id);
 		
 		model.addAttribute("article", article);
+		model.addAttribute("replies", replies);
 
 		return "usr/article/detail";
 	}
@@ -174,4 +177,4 @@ public class UsrArticleController {
 	}
 	
 	
-}
+} 

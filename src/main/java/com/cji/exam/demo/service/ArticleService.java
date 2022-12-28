@@ -116,4 +116,5 @@ private ArticleRepository articleRepository;
 	public int getArticleHitCount(int id) {
 		return articleRepository.getArticleHitCount(id);
 	}
+
 }

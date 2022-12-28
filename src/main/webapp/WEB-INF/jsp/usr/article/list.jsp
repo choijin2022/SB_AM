@@ -26,11 +26,12 @@
 		<div class="table-box-type-1">
 			<table class="table w-full">
 				<colgroup>
-					<col width="60"/>
-					<col width="200"/>
+					<col width="60" />
+					<col width="200" />
 					<col />
-					<col width="100"/>
-					<col width="50"/>
+					<col width="120" />
+					<col width="50" />
+					<col width="50" />
 				</colgroup>
 				<thead>
 					<tr>
