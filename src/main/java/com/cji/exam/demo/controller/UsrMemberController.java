@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -108,4 +109,28 @@ public class UsrMemberController {
 
 		return Utility.jsReplace("로그아웃 되었습니다", "/"); 
 	}
+	
+	
+	@RequestMapping("/usr/member/memberDetail")
+	public String memberDetail(Model model, HttpServletRequest req, String loginId, String loginPw) {
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+
+//		if (member == null) {
+//			return Utility.jsHistoryBack("존재하지 않는 아이디입니다");
+//		}
+
+//		if (member.getLoginPw().equals(loginPw) == false) {
+//			return Utility.jsHistoryBack("비밀번호가 일치하지 않습니다");
+//		}
+		
+		model.addAttribute(member);
+
+		return "/usr/member/memberDetail";
+	}
+	
+	
+	
+	
+	
 }
