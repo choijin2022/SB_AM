@@ -33,7 +33,7 @@ public class UsrReplyController {
 
 		return Utility.jsReplace(Utility.f("%d번 댓글이 생성되었습니다", id), Utility.f("../article/detail?id=%d", relId));
 	}
-	
+
 	@RequestMapping("/usr/reply/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
@@ -48,21 +48,7 @@ public class UsrReplyController {
 
 		replyService.deleteReply(id);
 
-		return Utility.jsReplace(Utility.f("%d번 댓글을 수정했습니다", id), Utility.f("../article/detail?id=%d", reply.getRelId()));
-	}
-	
-	@RequestMapping("/usr/reply/getModifyForm")
-	@ResponseBody
-	public ResultData getModifyForm(int id) {
-
-		Reply reply = replyService.getForPrintReply(id);
-
-		if(reply == null) {
-			return ResultData.from("F-1", "해당 댓글은 존재하지 않습니다.");
-		}
-
-
-		return ResultData.from("S-1", "성공", "reply",reply);
+		return Utility.jsReplace(Utility.f("%d번 댓글을 삭제했습니다", id), Utility.f("../article/detail?id=%d", reply.getRelId()));
 	}
 	
 	@RequestMapping("/usr/reply/doModify")
@@ -77,8 +63,21 @@ public class UsrReplyController {
 			return Utility.jsHistoryBack(actorCanMDRd.getMsg());
 		}
 
-		replyService.doModify(id,body);
+		replyService.modifyReply(id, body);
 
 		return Utility.jsReplace(Utility.f("%d번 댓글을 수정했습니다", id), Utility.f("../article/detail?id=%d", reply.getRelId()));
+	}
+	
+	@RequestMapping("/usr/reply/getReplyContent")
+	@ResponseBody
+	public ResultData<Reply> getReplyContent(int id) {
+		
+		Reply reply = replyService.getReplyContent(id);
+		
+		if(reply == null) {
+			return ResultData.from("F-1", "해당 댓글은 존재하지 않습니다");
+		}
+		
+		return ResultData.from("S-1", "댓글 정보 조회 성공", "reply", reply);
 	}
 }

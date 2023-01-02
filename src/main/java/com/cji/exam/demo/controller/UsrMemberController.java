@@ -1,5 +1,7 @@
 package com.cji.exam.demo.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cji.exam.demo.service.MemberService;
 import com.cji.exam.demo.util.Utility;
+import com.cji.exam.demo.vo.Article;
 import com.cji.exam.demo.vo.Member;
+import com.cji.exam.demo.vo.Reply;
 import com.cji.exam.demo.vo.ResultData;
 import com.cji.exam.demo.vo.Rq;
 
@@ -20,8 +24,9 @@ public class UsrMemberController {
 	
 	private MemberService memberService;
 	private Rq rq;
+
 	@Autowired
-	public UsrMemberController(MemberService memberService,Rq rq) {
+	public UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
 		this.rq = rq;
 	}
@@ -68,12 +73,8 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
+	public String doLogin(String loginId, String loginPw) {
 
-		
-		if (rq.getLoginedMemberId() != 0) {
-			return Utility.jsHistoryBack("이미 로그인 되어있습니다");
-		}
 		if (Utility.empty(loginId)) {
 			return Utility.jsHistoryBack("아이디를 입력해주세요");
 		}
@@ -98,39 +99,78 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
-
-		
-		if (rq.getLoginedMemberId() == 0) {
-			return Utility.jsHistoryBack("로그아웃 상태입니다");
-		}
+	public String doLogout() {
 
 		rq.logout();
 
 		return Utility.jsReplace("로그아웃 되었습니다", "/"); 
 	}
 	
-	
-	@RequestMapping("/usr/member/memberDetail")
-	public String memberDetail(Model model, HttpServletRequest req, String loginId, String loginPw) {
-		
-		Member member = memberService.getMemberByLoginId(loginId);
-
-//		if (member == null) {
-//			return Utility.jsHistoryBack("존재하지 않는 아이디입니다");
-//		}
-
-//		if (member.getLoginPw().equals(loginPw) == false) {
-//			return Utility.jsHistoryBack("비밀번호가 일치하지 않습니다");
-//		}
-		
-		model.addAttribute(member);
-
-		return "/usr/member/memberDetail";
+	@RequestMapping("/usr/member/myPage")
+	public String showMyPage() {
+		return "usr/member/myPage";
 	}
 	
+	@RequestMapping("/usr/member/checkPassword")
+	public String showCheckPassword() {
+		return "usr/member/checkPassword";
+	}
 	
+	@RequestMapping("/usr/member/doCheckPassword")
+	public String doCheckPassword(String loginPw) {
+		
+		if (Utility.empty(loginPw)) {
+			return rq.jsReturnOnView("비밀번호를 입력해주세요", true);
+		}
+		
+		if (rq.getLoginedMember().getLoginPw().equals(loginPw) == false) {
+			return rq.jsReturnOnView("비밀번호가 일치하지 않습니다", true);
+		}
+		
+		return "usr/member/modify";
+	}
 	
+	@RequestMapping("/usr/member/doModify")
+	@ResponseBody
+	public String doModify(String nickname, String cellphoneNum, String email) {
+
+		if (Utility.empty(nickname)) {
+			return Utility.jsHistoryBack("닉네임을 입력해주세요");
+		}
+		if (Utility.empty(cellphoneNum)) {
+			return Utility.jsHistoryBack("전화번호를 입력해주세요");
+		}
+		if (Utility.empty(email)) {
+			return Utility.jsHistoryBack("이메일을 입력해주세요");
+		}
+
+		memberService.doModify(rq.getLoginedMemberId(), nickname, cellphoneNum, email);
+		
+		return Utility.jsReplace("회원정보가 수정되었습니다", "myPage");
+	}
 	
+	@RequestMapping("/usr/member/passWordModify")
+	public String passWordModify() {
+		return "usr/member/passWordModify";
+	}
+	
+	@RequestMapping("/usr/member/doPassWordModify")
+	@ResponseBody
+	public String doPassWordModify(String loginPw, String loginPwConfirm) {
+		
+		if (Utility.empty(loginPw)) {
+			return Utility.jsHistoryBack("새 비밀번호를 입력해주세요");
+		}
+		if (Utility.empty(loginPwConfirm)) {
+			return Utility.jsHistoryBack("새 비밀번호 확인을 입력해주세요");
+		}
+		if (loginPw.equals(loginPwConfirm) == false) {
+			return Utility.jsHistoryBack("비밀번호가 일치하지 않습니다");
+		}
+
+		memberService.doPassWordModify(rq.getLoginedMemberId(), loginPw);
+		
+		return Utility.jsReplace("비밀번호가 수정되었습니다", "myPage");
+	}
 	
 }

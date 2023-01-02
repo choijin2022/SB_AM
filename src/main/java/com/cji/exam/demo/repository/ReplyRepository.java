@@ -40,41 +40,34 @@ public interface ReplyRepository {
 			""")
 	List<Reply> getForPrintReplies(String relTypeCode, int id);
 
-	
 	@Select("""
-			SELECT * 
-			FROM reply
-			WHERE id = #{id}
+			SELECT *
+				FROM reply
+				WHERE id = #{id}
 			""")
 	Reply getReply(int id);
-	
-	
-	
+
 	@Delete("""
-			DELETE FROM reply 
-			WHERE id = #{id}
+			DELETE FROM reply
+				WHERE id = #{id}
 			""")
 	void deleteReply(int id);
 
+	@Update("""
+			UPDATE reply
+				SET updateDate = NOW(),
+					`body` = #{body}
+				WHERE id = #{id}
+			""")
+	void modifyReply(int id, String body);
 	
 	@Select("""
 			SELECT R.*, M.nickname AS writerName
 				FROM reply AS R
-				INNER JOIN member AS m
-				ON R.memberId = m.id
+				INNER JOIN `member` AS M
+				ON R.memberId = M.id
 				WHERE R.id = #{id}
-			
 			""")
-	Reply getForPrintReply(int id);
-	
-	
-	@Update("""
-			UPDATE reply
-				set updateDate = NOW(),
-				 	`body` = #{body}
-				 WHERE id = #{id}
-			
-			""")
-	void doModify(int id, String body);
+	Reply getReplyContent(int id);
 
 }

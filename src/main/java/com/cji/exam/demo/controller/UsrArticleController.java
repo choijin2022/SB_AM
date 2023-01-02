@@ -37,7 +37,7 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/write")
 	public String showWrite() {
-		return "usr/article/write";
+		return "/usr/article/write";
 	}
 
 	@RequestMapping("/usr/article/doWrite")
@@ -175,6 +175,5 @@ public class UsrArticleController {
 		
 		return rd;
 	}
-	
 	
 } 

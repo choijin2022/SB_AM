@@ -29,32 +29,13 @@ public class ReplyService {
 
 	public List<Reply> getForPrintReplies(int loginedMemberId, String relTypeCode, int id) {
 		
-		List<Reply> Replies = replyRepository.getForPrintReplies(relTypeCode, id);
+		List<Reply> replies = replyRepository.getForPrintReplies(relTypeCode, id);
 		
-		
-		for( Reply reply : Replies) {
-			if(reply.getMemberId() ==loginedMemberId) {
-				actorCanChangeData(loginedMemberId,reply);
-			}
+		for (Reply reply : replies) {
+			actorCanChangeData(loginedMemberId, reply);
 		}
 		
-		return Replies;
-	}
-
-	public Reply getReply(int id) {
-		return replyRepository.getReply(id);
-	}
-
-	public ResultData actorCanMD(int loginedMemberId, Reply reply) {
-		if(reply == null) {
-			return ResultData.from("F-1", Utility.f("해당 댓글은 존재하지 않습니다"));
-		}
-		
-		if(loginedMemberId != reply.getMemberId()) {
-			return ResultData.from("F-B", "해당 댓글에 대한 권한이 없습니다");
-		}
-		
-		return ResultData.from("S-1", "가능");
+		return replies;
 	}
 	
 	private void actorCanChangeData(int loginedMemberId, Reply reply) {
@@ -66,20 +47,34 @@ public class ReplyService {
 		reply.setActorCanChangeData(actorCanChangeDataRd.isSuccess());
 		
 	}
+	
+	public ResultData actorCanMD(int loginedMemberId, Reply reply) {
+		
+		if(reply == null) {
+			return ResultData.from("F-1", Utility.f("해당 댓글은 존재하지 않습니다"));
+		}
+		
+		if(loginedMemberId != reply.getMemberId()) {
+			return ResultData.from("F-B", "해당 댓글에 대한 권한이 없습니다");
+		}
+		
+		return ResultData.from("S-1", "가능");
+	}
+
+	public Reply getReply(int id) {
+		return replyRepository.getReply(id);
+	}
 
 	public void deleteReply(int id) {
 		replyRepository.deleteReply(id);
-		
+	}
+	
+	public void modifyReply(int id, String body) {
+		replyRepository.modifyReply(id, body);
 	}
 
-	
-	
-	public Reply getForPrintReply(int id) {
-		return replyRepository.getForPrintReply(id);
-	}
-
-public void doModify(int id, String body) {
-		replyRepository.doModify( id,  body);
+	public Reply getReplyContent(int id) {
+		return replyRepository.getReplyContent(id);
 	}
 }
 	
