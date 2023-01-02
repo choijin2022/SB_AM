@@ -12,53 +12,74 @@ import com.cji.exam.demo.vo.ResultData;
 public class MemberService {
 	
 	
-private MemberRepository memberRepository;
-
-@Autowired
-public MemberService(MemberRepository memberRepository) {
-	this.memberRepository = memberRepository;
-}
-
-public ResultData<Integer> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
-		String email) {
+	private MemberRepository memberRepository;
+	private AttrService attrService;
 	
-	// 로그인아이디 중복체크
-	Member existsMember = getMemberByLoginId(loginId);
-	
-	if(existsMember != null) {
-		return ResultData.from("F-7", Utility.f("이미 사용중인 아이디(%s)입니다", loginId));
+	@Autowired
+	public MemberService(MemberRepository memberRepository, AttrService attrService) {
+		this.memberRepository = memberRepository;
+		this.attrService = attrService;
+	}
+
+	public ResultData<Integer> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
+			String email) {
+		
+		// 로그인아이디 중복체크
+		Member existsMember = getMemberByLoginId(loginId);
+		
+		if(existsMember != null) {
+			return ResultData.from("F-7", Utility.f("이미 사용중인 아이디(%s)입니다", loginId));
+		}
+		
+		// 이름 + 이메일 중복체크
+		existsMember = getMemberByNameAndEmail(name, email);
+		
+		if(existsMember != null) {
+			return ResultData.from("F-8", Utility.f("이미 사용중인 이름(%s)과 이메일(%s)입니다", name, email));
+		}
+		
+		memberRepository.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+		int id = memberRepository.getLastInsertId();
+		return ResultData.from("S-1", "회원가입이 완료되었습니다", "id", id);
+	}
+
+	public Member getMemberById(int id) {
+		return memberRepository.getMemberById(id);
 	}
 	
-	// 이름 + 이메일 중복체크
-	existsMember = getMemberByNameAndEmail(name, email);
-	
-	if(existsMember != null) {
-		return ResultData.from("F-8", Utility.f("이미 사용중인 이름(%s)과 이메일(%s)입니다", name, email));
+	public Member getMemberByLoginId(String loginId) {
+		return memberRepository.getMemberByLoginId(loginId);
 	}
 	
-	memberRepository.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
-	int id = memberRepository.getLastInsertId();
-	return ResultData.from("S-1", "회원가입이 완료되었습니다", "id", id);
-}
+	private Member getMemberByNameAndEmail(String name, String email) {
+		return memberRepository.getMemberByNameAndEmail(name, email);
+	}
 
-public Member getMemberById(int id) {
-	return memberRepository.getMemberById(id);
-}
+	public void doModify(int loginedMemberId, String nickname, String cellphoneNum, String email) {
+		memberRepository.doModify(loginedMemberId, nickname, cellphoneNum, email);
+	}
 
-public Member getMemberByLoginId(String loginId) {
-	return memberRepository.getMemberByLoginId(loginId);
-}
+	public void doPassWordModify(int loginedMemberId, String loginPw) {
+		memberRepository.doPassWordModify(loginedMemberId, loginPw);
+	}
 
-private Member getMemberByNameAndEmail(String name, String email) {
-	return memberRepository.getMemberByNameAndEmail(name, email);
-}
+	public String genMemberModifyAuthKey(int loginedMemberId) {
+		
+		String memberModifyAuthKey = Utility.getTempPassword(10);
+		
+		attrService.setValue("member", loginedMemberId, "extra", "memberModifyAuthKey", memberModifyAuthKey, Utility.getDateStrLater(60 * 5));
+		
+		return memberModifyAuthKey;
+	}
 
-public void doModify(int loginedMemberId, String nickname, String cellphoneNum, String email) {
-	memberRepository.doModify(loginedMemberId, nickname, cellphoneNum, email);
-}
-
-public void doPassWordModify(int loginedMemberId, String loginPw) {
-	memberRepository.doPassWordModify(loginedMemberId, loginPw);
-}
+	public ResultData checkMemberModifyAuthKey(int loginedMemberId, String memberModifyAuthKey) {
+		String saved = attrService.getValue("member", loginedMemberId, "extra", "memberModifyAuthKey");
+		
+		if (!saved.equals(memberModifyAuthKey)) {
+			return ResultData.from("F-1", "일치하지 않거나 만료된 인증코드입니다");
+		}
+		
+		return ResultData.from("S-1", "정상 인증코드입니다");
+	}
 	
 }

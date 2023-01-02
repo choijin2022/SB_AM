@@ -35,7 +35,6 @@ public class Rq {
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 		
-		
 		if(session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = memberService.getMemberById(loginedMemberId);
@@ -44,7 +43,6 @@ public class Rq {
 		this.loginedMemberId = loginedMemberId;
 		this.loginedMember = loginedMember;
 		
-		this.req.setAttribute("rq", this);
 	}
 
 	public void jsPrintHistoryBack(String msg) {
@@ -73,12 +71,6 @@ public class Rq {
 		req.setAttribute("msg", msg);
 		req.setAttribute("historyBack", historyBack);
 		return "usr/common/js";
-	}
-
-	// 해당 메서드는 Rq 객체의 생성을 유도한다.
-	// 편의를 위해서 BeforeActionInterceptor에서 호출해줘야 함
-	public void initOnBeforeActionInterceptor() {
-		
 	}
 	
 }
