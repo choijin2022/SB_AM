@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="ARTICLE MODIFY" />
 <%@ include file="../common/head.jsp"%>
+<%@ include file="../common/toastUiEditorLib.jsp"%>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
@@ -32,11 +33,19 @@
 						</tr>
 						<tr>
 							<th>제목</th>
-							<td><input class="input input-bordered w-full max-w-xs" type="text" name="title" placeholder="제목을 입력해주세요" value="${article.title }" /></td>
+							<td><input class="input input-bordered w-full max-w-xs" type="text" name="title" placeholder="제목을 입력해주세요"
+								value="${article.title }" /></td>
 						</tr>
 						<tr>
 							<th>내용</th>
-							<td><textarea class="textarea textarea-bordered w-full" name="body" placeholder="내용을 입력해주세요">${article.body }</textarea></td>
+							<td>
+<%-- 								<textarea class="textarea textarea-bordered w-full" name="body" placeholder="내용을 입력해주세요">${article.body }</textarea> --%>
+							<div class="toast-ui-editor">
+								${article.body }
+								<script type="text/x-template"></script>
+							</div>
+							
+							</td>
 						</tr>
 						<tr>
 							<td colspan="2"><button class="btn btn-active btn-ghost">수정</button></td>
@@ -47,7 +56,8 @@
 		</form>
 		<div class="btns mt-2">
 			<button class="btn-text-link btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
-			<a class="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>
+			<a class="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;"
+				href="doDelete?id=${article.id }">삭제</a>
 		</div>
 	</div>
 </section>

@@ -12,8 +12,13 @@
   src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/godo/Godo/GodoB.woff') format('woff');
 }
 
-html > body {
+html > body, html > body .ProseMirror, html > body .toastui-editor-contents {
  font-family: 'Godo', sans-serif;
+/*  text-underline-position:under; */
+}
+
+html > body .ProseMirror, html > body .toastui-editor-contents{
+	font-size:1.25rem;
 }
 
 .table-box-type-1 > table {
@@ -33,6 +38,10 @@ html > body {
 .btn-text-link:hover {
 	color: olive;
 	text-decoration: underline;
+}
+
+.border-bottom-line {
+	border-bottom: 1px solid #e1e1e1;
 }
 
 body {
