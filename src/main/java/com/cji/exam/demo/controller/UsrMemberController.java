@@ -1,21 +1,13 @@
 package com.cji.exam.demo.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cji.exam.demo.service.MemberService;
 import com.cji.exam.demo.util.Utility;
-import com.cji.exam.demo.vo.Article;
 import com.cji.exam.demo.vo.Member;
-import com.cji.exam.demo.vo.Reply;
 import com.cji.exam.demo.vo.ResultData;
 import com.cji.exam.demo.vo.Rq;
 
@@ -65,7 +57,13 @@ public class UsrMemberController {
 
 		return ResultData.from(doJoinRd.getResultCode(), doJoinRd.getMsg(), "member", member);
 	}
-
+	@RequestMapping("/usr/member/join")
+	public String join(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
+			String email) {
+		
+		return "";
+	}
+	
 	@RequestMapping("/usr/member/login")
 	public String showLogin() {
 		return "usr/member/login";

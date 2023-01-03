@@ -6,7 +6,7 @@
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form action="doModify" method="POST">
+		<form action="doModify" method="POST" onsubmit="submitForm(this); return false;">
 			<input type="hidden" name="id" value="${article.id }" />
 			<div class="table-box-type-1">
 				<table class="table table-zebra w-full">
