@@ -14,16 +14,16 @@
 
 				<tbody>
 					<tr>
-						<th>로그인아이디</th>
+						<th>아이디</th>
 						<td><input class="w-96" type="text" name="loginId" placeholder="아이디를 입력해주세요"></td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
 						<td><input class="w-96" type="text" name="loginPw" placeholder="비밀번호를 입력해주세요"></td>
 					</tr>
-						
+					<tr>	
 						<td colspan="2"><button>로그인</button></td>
-					
+					</tr>
 				</tbody>
 			</table>
 		</div>
