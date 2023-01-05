@@ -51,3 +51,41 @@ html > body .toast-ui-viewer .toastui-editor-contents{
 body {
 	min-width: 800px;
 }
+
+modal-exam{
+	font-size:3rem;
+}
+
+.layer{
+	display:none;
+	width:500px;
+	height:500px;
+	background-color:black;
+	color:white;
+	border:10px solid green;
+	position:absolution;
+	top:50%;
+	left:50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.layer>h2{
+	padding: 20px;
+} 
+
+.layer>.close-btn{
+	position:absolution;
+	bottom:20px;
+}
+
+.layer-bg{
+	display:none;
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0, .4);
+	position:absolution;
+	top:0;
+	left:0;
+	
+}
+
